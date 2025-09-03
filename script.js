@@ -119,16 +119,8 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// EmailJS configuration for direct email sending
-// Using a demo configuration - you should set up your own EmailJS account for production
-const EMAILJS_SERVICE_ID = 'service_portfolio'; 
-const EMAILJS_TEMPLATE_ID = 'template_contact';
-const EMAILJS_PUBLIC_KEY = 'demo_public_key';
-
-// Initialize EmailJS
-if (typeof emailjs !== 'undefined') {
-    emailjs.init('LPCuJ4y7byjq8E7_y');
-}
+// Formspree configuration
+const FORMSFREE_ENDPOINT = 'https://formspree.io/f/xpzgwqeq';
 
 // Contact form handling with direct email sending
 contactForm.addEventListener('submit', async (e) => {
@@ -162,55 +154,31 @@ contactForm.addEventListener('submit', async (e) => {
         // Send email using EmailJS - no redirects, emails sent directly
         // You'll need to set up EmailJS first (I'll guide you through it)
         
-        if (typeof emailjs !== 'undefined') {
-            console.log('EmailJS is available, attempting to send email...');
-            
-            // EmailJS is available - send email directly
-            const templateParams = {
-                from_name: name,
-                from_email: email,
-                subject: subject,
-                message: message,
-                to_email: 'rmapiye77@gmail.com'
-            };
-            
-            console.log('Template params:', templateParams);
-            console.log('Service ID:', 'service_r1alu8g');
-            console.log('Template ID:', 'template_tehem2k');
-            console.log('Public Key:', 'LPCuJ4y7byjq8E7_y');
-            
-            try {
-                const response = await emailjs.send(
-                    'service_r1alu8g', // Your actual service ID
-                    'template_tehem2k', // Your actual template ID
-                    templateParams,
-                    'LPCuJ4y7byjq8E7_y' // Your actual public key
-                );
-                
-                console.log('EmailJS response:', response);
-                
-                if (response.status === 200) {
-                    showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-                    contactForm.reset();
-                } else {
-                    throw new Error(`EmailJS failed with status: ${response.status}`);
-                }
-            } catch (emailError) {
-                console.error('EmailJS specific error:', emailError);
-                throw emailError;
+        // Send email using Formspree - no redirects, emails sent directly
+        console.log('Sending email via Formspree...');
+        
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('subject', subject);
+        formData.append('message', message);
+        formData.append('_subject', 'New Portfolio Contact Form Submission');
+        
+        const response = await fetch(FORMSFREE_ENDPOINT, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
             }
-        } else {
-            // EmailJS not available - fallback to email client
-            const mailtoLink = `mailto:rmapiye77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-                `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`
-            )}`;
-            
-            showNotification('Opening your email client. Please send the message manually.', 'success');
+        });
+        
+        console.log('Formspree response:', response);
+        
+        if (response.ok) {
+            showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
             contactForm.reset();
-            
-            setTimeout(() => {
-                window.location.href = mailtoLink;
-            }, 1500);
+        } else {
+            throw new Error(`Formspree failed with status: ${response.status}`);
         }
         
     } catch (error) {
@@ -225,27 +193,7 @@ contactForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Helper function for mailto
-function openMailtoLink(name, email, subject, message) {
-    const mailtoLink = `mailto:rmapiye77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    )}`;
-    
-    window.location.href = mailtoLink;
-    
-    setTimeout(() => {
-        showNotification('Email client opened! Please send the email from your email app.', 'success');
-        contactForm.reset();
-    }, 1000);
-}
 
-// Helper function to reset form button
-function resetFormButton(submitBtn, originalText) {
-    setTimeout(() => {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }, 1000);
-}
 
 // Email validation function
 function isValidEmail(email) {
@@ -491,4 +439,3 @@ window.addEventListener('load', () => {
 });
 
 console.log('Portfolio website loaded successfully! 🚀');
-
