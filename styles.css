@@ -700,6 +700,10 @@ body {
         height: 250px;
     }
     
+    .hero-avatar img {
+        object-position: center 20% !important; /* Show more of the face area on mobile */
+    }
+    
     .about-content {
         grid-template-columns: 1fr;
         gap: 2rem;
