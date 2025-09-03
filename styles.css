@@ -681,13 +681,14 @@ body {
     }
     
     .hero {
-        padding-top: 100px; /* Add space for fixed navbar on mobile */
+        padding-top: 80px !important; /* Add space for fixed navbar on mobile */
     }
     
     .hero-container {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 2rem;
+        padding-top: 40px !important; /* Additional padding for hero content */
     }
     
     .hero-title {
