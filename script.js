@@ -159,30 +159,50 @@ contactForm.addEventListener('submit', async (e) => {
     submitBtn.disabled = true;
     
     try {
-        // Use a different approach - send to a service that doesn't redirect
-        // For now, let's simulate successful submission and show success message
-        // The user can email you directly, or we can set up a different service later
+        // Actually send the email using a working service
+        // Using a simple approach that will work reliably
         
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Create the email content
+        const emailContent = `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`;
         
-        // Show success message
-        showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
-        contactForm.reset();
+        // Send to your email using a working service
+        const response = await fetch('https://formsubmit.co/ajax/rmapiye77@gmail.com', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                subject: subject,
+                message: message,
+                _captcha: 'false'
+            })
+        });
         
-        // Optional: You can also open their email client with pre-filled message
+        if (response.ok) {
+            showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+            contactForm.reset();
+        } else {
+            throw new Error('Failed to send message');
+        }
+        
+    } catch (error) {
+        console.error('Error sending email:', error);
+        
+        // Fallback: Open user's email client with pre-filled message
         const mailtoLink = `mailto:rmapiye77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
             `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`
         )}`;
         
-        // Open email client in background (optional)
-        // window.open(mailtoLink, '_blank');
+        // Open email client
+        window.location.href = mailtoLink;
         
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Please email me directly at rmapiye77@gmail.com', 'error');
+        showNotification('Opening your email client. Please send the message manually.', 'success');
+        contactForm.reset();
     } finally {
-        // Reset button state
+        // Always reset button state
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     }
