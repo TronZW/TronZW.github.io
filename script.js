@@ -120,7 +120,7 @@ style.textContent = `
 document.head.appendChild(style);
 
 // Formspree configuration
-const FORMSFREE_ENDPOINT = 'https://formspree.io/f/xpzgwqeq';
+const FORMSFREE_ENDPOINT = 'https://formspree.io/f/mdklpaop';
 
 // Contact form handling with direct email sending
 contactForm.addEventListener('submit', async (e) => {
