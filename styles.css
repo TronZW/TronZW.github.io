@@ -680,6 +680,10 @@ body {
         left: 0;
     }
     
+    .hero {
+        padding-top: 100px; /* Add space for fixed navbar on mobile */
+    }
+    
     .hero-container {
         grid-template-columns: 1fr;
         text-align: center;
@@ -759,4 +763,3 @@ body {
         padding: 0 15px;
     }
 }
-
