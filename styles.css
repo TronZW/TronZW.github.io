@@ -701,7 +701,7 @@ body {
     }
     
     .hero-avatar img {
-        object-position: center 30% !important; /* Try showing more of the middle area where face might be */
+        object-position: center center !important; /* Show the very center of the image where face is most likely */
         object-fit: cover !important;
     }
     
