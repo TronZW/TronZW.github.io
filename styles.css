@@ -696,12 +696,12 @@ body {
     }
     
     .hero-avatar {
-        width: 250px;
-        height: 250px;
+        width: 300px;
+        height: 300px;
     }
     
     .hero-avatar img {
-        object-position: center top !important; /* Show the very top of the image (face area) on mobile */
+        object-position: center 30% !important; /* Try showing more of the middle area where face might be */
         object-fit: cover !important;
     }
     
