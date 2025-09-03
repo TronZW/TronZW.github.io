@@ -246,7 +246,6 @@ body {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    object-position: center top;
     border: 5px solid white;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
@@ -760,3 +759,4 @@ body {
         padding: 0 15px;
     }
 }
+
