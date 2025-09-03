@@ -127,7 +127,7 @@ const EMAILJS_PUBLIC_KEY = 'demo_public_key';
 
 // Initialize EmailJS
 if (typeof emailjs !== 'undefined') {
-    emailjs.init('YOUR_PUBLIC_KEY_HERE'); // You'll need to replace this
+    emailjs.init('LPCuJ4y7byjq8E7_y');
 }
 
 // Contact form handling with direct email sending
@@ -163,6 +163,8 @@ contactForm.addEventListener('submit', async (e) => {
         // You'll need to set up EmailJS first (I'll guide you through it)
         
         if (typeof emailjs !== 'undefined') {
+            console.log('EmailJS is available, attempting to send email...');
+            
             // EmailJS is available - send email directly
             const templateParams = {
                 from_name: name,
@@ -172,18 +174,30 @@ contactForm.addEventListener('submit', async (e) => {
                 to_email: 'rmapiye77@gmail.com'
             };
             
-            const response = await emailjs.send(
-                'service_r1alu8g', // Your actual service ID
-                'template_tehem2k', // Your actual template ID
-                templateParams,
-                'LPCuJ4y7byjq8E7_y' // Your actual public key
-            );
+            console.log('Template params:', templateParams);
+            console.log('Service ID:', 'service_r1alu8g');
+            console.log('Template ID:', 'template_tehem2k');
+            console.log('Public Key:', 'LPCuJ4y7byjq8E7_y');
             
-            if (response.status === 200) {
-                showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-                contactForm.reset();
-            } else {
-                throw new Error('EmailJS failed');
+            try {
+                const response = await emailjs.send(
+                    'service_r1alu8g', // Your actual service ID
+                    'template_tehem2k', // Your actual template ID
+                    templateParams,
+                    'LPCuJ4y7byjq8E7_y' // Your actual public key
+                );
+                
+                console.log('EmailJS response:', response);
+                
+                if (response.status === 200) {
+                    showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+                    contactForm.reset();
+                } else {
+                    throw new Error(`EmailJS failed with status: ${response.status}`);
+                }
+            } catch (emailError) {
+                console.error('EmailJS specific error:', emailError);
+                throw emailError;
             }
         } else {
             // EmailJS not available - fallback to email client
@@ -477,3 +491,4 @@ window.addEventListener('load', () => {
 });
 
 console.log('Portfolio website loaded successfully! 🚀');
+
