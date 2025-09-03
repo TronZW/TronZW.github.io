@@ -159,48 +159,51 @@ contactForm.addEventListener('submit', async (e) => {
     submitBtn.disabled = true;
     
     try {
-        // Actually send the email using a working service
-        // Using a simple approach that will work reliably
+        // Send email using EmailJS - no redirects, emails sent directly
+        // You'll need to set up EmailJS first (I'll guide you through it)
         
-        // Create the email content
-        const emailContent = `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`;
-        
-        // Send to your email using a working service
-        const response = await fetch('https://formsubmit.co/ajax/rmapiye77@gmail.com', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                name: name,
-                email: email,
+        if (typeof emailjs !== 'undefined') {
+            // EmailJS is available - send email directly
+            const templateParams = {
+                from_name: name,
+                from_email: email,
                 subject: subject,
                 message: message,
-                _captcha: 'false'
-            })
-        });
-        
-        if (response.ok) {
-            showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-            contactForm.reset();
+                to_email: 'rmapiye77@gmail.com'
+            };
+            
+            const response = await emailjs.send(
+                'service_r1alu8g', // Your actual service ID
+                'template_tehem2k', // Your actual template ID
+                templateParams,
+                'LPCuJ4y7byjq8E7_y' // Your actual public key
+            );
+            
+            if (response.status === 200) {
+                showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+                contactForm.reset();
+            } else {
+                throw new Error('EmailJS failed');
+            }
         } else {
-            throw new Error('Failed to send message');
+            // EmailJS not available - fallback to email client
+            const mailtoLink = `mailto:rmapiye77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+                `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`
+            )}`;
+            
+            showNotification('Opening your email client. Please send the message manually.', 'success');
+            contactForm.reset();
+            
+            setTimeout(() => {
+                window.location.href = mailtoLink;
+            }, 1500);
         }
         
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error:', error);
         
-        // Fallback: Open user's email client with pre-filled message
-        const mailtoLink = `mailto:rmapiye77@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-            `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`
-        )}`;
-        
-        // Open email client
-        window.location.href = mailtoLink;
-        
-        showNotification('Opening your email client. Please send the message manually.', 'success');
-        contactForm.reset();
+        // Final fallback: show contact info
+        showNotification('Unable to send message. Please email me directly at rmapiye77@gmail.com', 'error');
     } finally {
         // Always reset button state
         submitBtn.textContent = originalText;
