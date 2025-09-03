@@ -233,10 +233,9 @@
                     </div>
                 </div>
 
-                <form class="contact-form" id="contact-form">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_autoresponse" value="Thank you for contacting me! I'll get back to you soon.">
+                <form class="contact-form" id="contact-form" action="https://formspree.io/f/xpzgwqeq" method="POST">
+                    <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission">
+                    <input type="hidden" name="_next" value="https://tronzw.github.io/#contact">
                     
                     <div class="form-group">
                         <input type="text" id="name" name="name" placeholder="Your Name" required>
@@ -263,8 +262,7 @@
         </div>
     </footer>
 
-    <!-- EmailJS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
     
     <!-- JavaScript -->
     <script src="script.js"></script>
