@@ -701,7 +701,8 @@ body {
     }
     
     .hero-avatar img {
-        object-position: center 20% !important; /* Show more of the face area on mobile */
+        object-position: center top !important; /* Show the very top of the image (face area) on mobile */
+        object-fit: cover !important;
     }
     
     .about-content {
